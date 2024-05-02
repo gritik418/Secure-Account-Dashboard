@@ -5,6 +5,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import {
+  getLoginInfo,
   selectIsLoggedIn,
   selectLoginLoading,
   userLoginAsync,
@@ -39,8 +40,11 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) return;
-    redirect("/");
+    if (!isLoggedIn) {
+      dispatch(getLoginInfo());
+    } else {
+      redirect("/");
+    }
   }, [isLoggedIn]);
 
   return (

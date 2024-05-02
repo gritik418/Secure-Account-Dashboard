@@ -20,3 +20,18 @@ export const userLogin = async (userData: UserLoginDataType) => {
     return error.response.data;
   }
 };
+
+export const getUser = async (token: string) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/api/user/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};

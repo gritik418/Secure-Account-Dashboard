@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width: 850px;
+}
+
+.heading {
+  margin-top: 16px;
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.content {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.link {
+  color: rgb(128, 198, 217);
+  font-size: 24px;
+  font-weight: 600;
+}

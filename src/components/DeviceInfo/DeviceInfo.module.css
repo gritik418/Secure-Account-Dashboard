@@ -1,0 +1,60 @@
+.container {
+  min-height: 140px;
+  border-radius: 4px;
+  padding: 16px;
+  background-color: rgb(253, 253, 253);
+  box-shadow: 2px 3px 8px 1px rgb(83 83 83 / 19%);
+  position: relative;
+}
+
+.header {
+  height: 40px;
+  border-bottom: 2px solid rgb(239, 231, 231);
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.float {
+  background-color: #6bbbf1;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 14px;
+  font-size: 14px;
+  position: absolute;
+  font-weight: 600;
+  top: -10px;
+  right: 20px;
+}
+
+.deviceInfo {
+  margin-top: 12px;
+  color: gray;
+}
+
+.time {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 12px;
+  color: gray;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  border: 1px solid rgb(175, 174, 174);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 3px 3px 4px 1px #cfcbcb9e;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  background-color: #eaeaeaab;
+}

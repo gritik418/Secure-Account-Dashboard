@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
+import Authenticator from "@/providers/Authenticator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ReduxProvider>
-          <ChakraProvider>{children}</ChakraProvider>
+          <Authenticator>
+            <ChakraProvider>{children}</ChakraProvider>
+          </Authenticator>
         </ReduxProvider>
       </body>
     </html>

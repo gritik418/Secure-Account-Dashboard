@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 54px;
+}
+
+.group {
+  max-width: 900px;
+  width: 90%;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}

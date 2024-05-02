@@ -30,6 +30,10 @@ const authSlice = createSlice({
   reducers: {
     getLoginInfo: (state) => {
       const token = localStorage.getItem("at") || "";
+      if (!token) {
+        state.isLoggedIn = false;
+        return;
+      }
       const user = jwt.decode(token) as JwtPayload;
       if (user.id) {
         state.isLoggedIn = true;

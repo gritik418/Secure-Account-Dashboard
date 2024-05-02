@@ -51,26 +51,26 @@ const DeviceInfo = ({
   return (
     <div className={styles.container}>
       <p className={styles.header}>
-        {history.device.os.name}{" "}
-        {`${history.device.client.type
-          .at(0)
-          ?.toUpperCase()}${history.device.client.type.slice(1)}`}{" "}
+        {history?.device?.os?.name}{" "}
+        {`${history?.device?.client?.type
+          ?.at(0)
+          ?.toUpperCase()}${history?.device?.client?.type?.slice(1)}`}{" "}
         -{" "}
-        {`${history.device.client.name
-          .at(0)
-          ?.toUpperCase()}${history.device.client.name.slice(1)}`}
+        {`${history?.device?.client?.name
+          ?.at(0)
+          ?.toUpperCase()}${history?.device?.client?.name?.slice(1)}`}
       </p>
 
-      {tokenInfo.sk === history.secretKey && (
+      {tokenInfo.sk === history?.secretKey && (
         <div className={styles.float}>Current device</div>
       )}
 
       <div className={styles.deviceInfo}>
         <p>
-          {history.device.device.brand} {history.device.device.model} -{" "}
-          {`${history.device.device.type
-            .at(0)
-            ?.toUpperCase()}${history.device.device.type.slice(1)}`}
+          {history?.device?.device?.brand} {history?.device?.device?.model} -{" "}
+          {`${history?.device?.device?.type
+            ?.at(0)
+            ?.toUpperCase()}${history?.device?.device?.type?.slice(1)}`}
         </p>
       </div>
 

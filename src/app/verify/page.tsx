@@ -1,14 +1,37 @@
 "use client";
+import {
+  selectEmail,
+  selectIsLoggedIn,
+  selectVerifyLoading,
+  verifyEmailAsync,
+} from "@/features/auth/authSlice";
 import { HStack, PinInput, PinInputField } from "@chakra-ui/react";
+import { Dispatch } from "@reduxjs/toolkit";
 import Image from "next/image";
-import { useState } from "react";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const Verify = () => {
-  const [otp, setOtp] = useState<string>();
+  const [otp, setOtp] = useState<string>("");
+  const dispatch = useDispatch<Dispatch<any>>();
+
+  const email = useSelector(selectEmail);
+  const loading = useSelector(selectVerifyLoading);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const handleClick = () => {
-    console.log(otp);
+    dispatch(verifyEmailAsync({ email, otp }));
   };
+
+  if (!email) {
+    return redirect("/login");
+  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      redirect("/");
+    }
+  }, [isLoggedIn]);
 
   return (
     <div className="flex items-center justify-center px-4 py-6 sm:px-6 sm:py-16 lg:px-8 lg:py-12">
@@ -23,8 +46,8 @@ const Verify = () => {
           <h1 className="text-3xl mt-4">Email Verification</h1>
           <p className="text-lg mt-6 text-center font-normal">
             We emailed you a six-digit code to{" "}
-            <span className="font-bold">gritik418@gmail.com</span>. Enter the
-            code below to confirm your email address.
+            <span className="font-bold">{email}</span>. Enter the code below to
+            confirm your email address.
           </p>
 
           <HStack className="mt-10">
@@ -47,9 +70,9 @@ const Verify = () => {
 
           <button
             onClick={handleClick}
-            className="mt-12 transition-all duration-200 ease-in-out bg-[#2680bc] hover:bg-[#5694bc] uppercase text-white text-2xl py-2 px-20 rounded-lg"
+            className="mt-12 transition-all duration-200 ease-in-out bg-[#2680bc] hover:bg-[#5694bc] uppercase text-white text-2xl py-2 w-[300px] rounded-lg"
           >
-            Verify
+            {!loading ? "Verify" : "Processing..."}
           </button>
         </div>
       </div>

@@ -1,26 +1,49 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  EmailVerificationDataType,
   UserLoginDataType,
+  UserSignupDataType,
   getUser,
   signOutFromOtherDevice,
   userLogin,
+  userSignup,
+  verifyEmail,
 } from "./authAPI";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 const initialState = {
   isLoggedIn: false,
   loginLoading: false,
+  signupLoading: false,
   loginHistory: [],
+  email: "",
   userLoading: false,
   user: {},
   tokenInfo: {},
   authentication: "",
+  verifyLoading: false,
 };
 
 export const userLoginAsync = createAsyncThunk(
   "auth/userLogin",
   async (userData: UserLoginDataType) => {
     const response = await userLogin(userData);
+    return response;
+  }
+);
+
+export const userSignupAsync = createAsyncThunk(
+  "auth/userSignup",
+  async (userData: UserSignupDataType) => {
+    const response = await userSignup(userData);
+    return response;
+  }
+);
+
+export const verifyEmailAsync = createAsyncThunk(
+  "auth/verifyEmail",
+  async (userData: EmailVerificationDataType) => {
+    const response = await verifyEmail(userData);
     return response;
   }
 );
@@ -119,7 +142,39 @@ const authSlice = createSlice({
           }
         }
       })
-      .addCase(signOutFromOtherDeviceAsync.rejected, (state, action) => {});
+      .addCase(signOutFromOtherDeviceAsync.rejected, (state, action) => {})
+      .addCase(userSignupAsync.pending, (state, action) => {
+        state.signupLoading = true;
+      })
+      .addCase(userSignupAsync.fulfilled, (state, action) => {
+        state.signupLoading = false;
+        if (action.payload.success) {
+          state.email = action.payload.email;
+        }
+      })
+      .addCase(userSignupAsync.rejected, (state, action) => {
+        state.signupLoading = false;
+      })
+      .addCase(verifyEmailAsync.pending, (state, action) => {
+        state.verifyLoading = true;
+      })
+      .addCase(verifyEmailAsync.fulfilled, (state, action) => {
+        state.verifyLoading = false;
+        console.log(action.payload);
+        if (action.payload.success) {
+          const token = action.payload.token;
+          if (token && token !== "") {
+            localStorage.setItem("at", token);
+            state.isLoggedIn = true;
+            state.authentication = "";
+          } else {
+            state.isLoggedIn = false;
+          }
+        }
+      })
+      .addCase(verifyEmailAsync.rejected, (state, action) => {
+        state.verifyLoading = false;
+      });
   },
 });
 
@@ -132,5 +187,8 @@ export const selectUser = (state: any) => state.auth.user;
 export const selectLoginHistory = (state: any) => state.auth.loginHistory;
 export const selectTokenInfo = (state: any) => state.auth.tokenInfo;
 export const selectAuthentication = (state: any) => state.auth.authentication;
+export const selectEmail = (state: any) => state.auth.email;
+export const selectSignupLoading = (state: any) => state.auth.signupLoading;
+export const selectVerifyLoading = (state: any) => state.auth.verifyLoading;
 
 export default authSlice.reducer;

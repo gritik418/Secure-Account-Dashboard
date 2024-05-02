@@ -4,14 +4,14 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-// import {
-//   getSignupInfo,
-//   selectIsLoggedIn,
-//   selectSignupLoading,
-//   userSignupAsync,
-// } from "@/features/auth/authSlice";
 import { redirect } from "next/navigation";
-import { selectIsLoggedIn } from "@/features/auth/authSlice";
+import {
+  getLoginInfo,
+  selectEmail,
+  selectIsLoggedIn,
+  selectSignupLoading,
+  userSignupAsync,
+} from "@/features/auth/authSlice";
 import Link from "next/link";
 
 const Signup = () => {
@@ -27,13 +27,13 @@ const Signup = () => {
   const dispatch = useDispatch<Dispatch<any>>();
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const loading = false; //useSelector(selectSignupLoading);
+  const loading = useSelector(selectSignupLoading);
+  const email = useSelector(selectEmail);
 
   const handleClick = () => setShow(!show);
 
   const handleUserSignup = () => {
-    console.log(userData);
-    // dispatch(userSignupAsync(userData));
+    dispatch(userSignupAsync(userData));
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,11 +44,19 @@ const Signup = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      //   dispatch(getSignupInfo());
+      dispatch(getLoginInfo());
     } else {
       redirect("/");
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!email || email === "") {
+      return;
+    } else {
+      redirect("/verify");
+    }
+  }, [email]);
 
   return (
     <section>

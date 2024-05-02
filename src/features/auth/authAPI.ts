@@ -7,9 +7,51 @@ export type UserLoginDataType = {
   password: string;
 };
 
+export type UserSignupDataType = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  password: string;
+  password_confirmation: string;
+};
+
+export type EmailVerificationDataType = {
+  email: string;
+  otp: string;
+};
+
 export const userLogin = async (userData: UserLoginDataType) => {
   try {
     const { data } = await axios.post(`${BASE_URL}/api/login`, userData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const userSignup = async (userData: UserSignupDataType) => {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/api/signup`, userData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const verifyEmail = async (userData: EmailVerificationDataType) => {
+  try {
+    const { data } = await axios.post(`${BASE_URL}/api/verify`, userData, {
       headers: {
         "Content-Type": "application/json",
       },

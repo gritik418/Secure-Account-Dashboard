@@ -23,10 +23,6 @@ const Login = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const loading = useSelector(selectLoginLoading);
 
-  if (isLoggedIn) {
-    return redirect("/");
-  }
-
   const handleClick = () => setShow(!show);
 
   const handleUserLogin = () => {

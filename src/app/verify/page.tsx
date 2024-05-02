@@ -24,14 +24,15 @@ const Verify = () => {
     dispatch(verifyEmailAsync({ email, otp }));
   };
 
-  if (!email) {
-    return redirect("/login");
-  }
   useEffect(() => {
     if (isLoggedIn) {
       redirect("/");
     }
   }, [isLoggedIn]);
+
+  if (!email) {
+    return redirect("/login");
+  }
 
   return (
     <div className="flex items-center justify-center px-4 py-6 sm:px-6 sm:py-16 lg:px-8 lg:py-12">

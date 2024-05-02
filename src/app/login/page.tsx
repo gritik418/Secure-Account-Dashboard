@@ -11,6 +11,7 @@ import {
   userLoginAsync,
 } from "@/features/auth/authSlice";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -46,20 +47,20 @@ const Login = () => {
   return (
     <section>
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
-        <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
+        <div className="xl:mx-auto xl:w-full xl:max-w-md 2xl:max-w-lg">
           <div className="mb-2 flex justify-center"></div>
           <h2 className="text-center text-3xl font-bold leading-tight text-black">
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Don&apos;t have an account?
-            <a
-              href="#"
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/signup"
               title=""
               className="font-semibold text-black transition-all duration-200 hover:underline"
             >
               Create a free account
-            </a>
+            </Link>
           </p>
           <div className="space-y-5 mt-10">
             <div className="mt-4">

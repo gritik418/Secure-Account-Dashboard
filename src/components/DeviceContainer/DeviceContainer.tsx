@@ -1,20 +1,31 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./DeviceContainer.module.css";
 import DeviceInfo, { HistoryType } from "../DeviceInfo/DeviceInfo";
-import { useSelector } from "react-redux";
-import { selectTokenInfo, selectUser } from "@/features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getLoginInfo,
+  selectLoginHistory,
+  selectTokenInfo,
+  selectUser,
+} from "@/features/auth/authSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 
 const DeviceContainer = () => {
-  const user = useSelector(selectUser);
+  const dispatch = useDispatch<Dispatch<any>>();
+  const loginHistory = useSelector(selectLoginHistory);
   const tokenInfo = useSelector(selectTokenInfo);
+
+  useEffect(() => {
+    dispatch(getLoginInfo());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
       <div className={styles.group}>
-        {user &&
-          user?.login_history &&
-          user.login_history.map((history: HistoryType, index: number) => {
+        {loginHistory &&
+          loginHistory &&
+          loginHistory.map((history: HistoryType, index: number) => {
             return (
               <DeviceInfo
                 key={history._id}

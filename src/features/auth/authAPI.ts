@@ -35,3 +35,21 @@ export const getUser = async (token: string) => {
     return error.response.data;
   }
 };
+
+export const signOutFromOtherDevice = async (
+  uniqueId: string,
+  token: string
+) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/api/signout/${uniqueId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};

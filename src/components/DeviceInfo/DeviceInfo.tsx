@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./DeviceInfo.module.css";
 import { MdOutlineAccessTime } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { signOutFromOtherDeviceAsync } from "@/features/auth/authSlice";
 
 type ClientType = {
   engine: string;
@@ -47,7 +50,13 @@ const DeviceInfo = ({
   history: HistoryType;
   tokenInfo: { id: string; sk: string; iat: number };
 }) => {
+  const dispatch = useDispatch<Dispatch<any>>();
+
   const date = new Date(history.updatedAt);
+
+  const handleSignoutFromOtherDevice = () => {
+    dispatch(signOutFromOtherDeviceAsync(history._id));
+  };
   return (
     <div className={styles.container}>
       <p className={styles.header}>
@@ -78,9 +87,13 @@ const DeviceInfo = ({
         <MdOutlineAccessTime /> <p>{date.toUTCString()}</p>
       </div>
 
-      <div className={styles.actions}>
-        <button className={styles.btn}>Sign Out</button>
-      </div>
+      {tokenInfo.sk !== history?.secretKey && (
+        <div className={styles.actions}>
+          <button className={styles.btn} onClick={handleSignoutFromOtherDevice}>
+            Sign Out
+          </button>
+        </div>
+      )}
     </div>
   );
 };

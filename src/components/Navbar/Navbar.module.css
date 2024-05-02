@@ -24,6 +24,10 @@
 .item {
   display: flex;
   align-items: center;
+}
+
+.name {
+  color: #fff;
   font-size: 20px;
   font-weight: 600;
 }
@@ -31,10 +35,27 @@
 .icon {
   font-size: 26px;
   margin-right: 6px;
+  color: #fff;
 }
 
 .navItems:not(:last-child) {
   margin-right: 30px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  border: 2px solid #fff;
+  border-radius: 40px;
+  padding-right: 20px;
+}
+
+.menuItem {
+  color: #000 !important;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 12px;
 }
 
 @media (min-width: 576px) {

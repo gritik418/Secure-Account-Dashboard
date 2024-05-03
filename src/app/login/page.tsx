@@ -7,6 +7,7 @@ import { Dispatch } from "@reduxjs/toolkit";
 import {
   getLoginInfo,
   selectIsLoggedIn,
+  selectLoginErrors,
   selectLoginLoading,
   userLoginAsync,
 } from "@/features/auth/authSlice";
@@ -23,6 +24,7 @@ const Login = () => {
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const loading = useSelector(selectLoginLoading);
+  const errors = useSelector(selectLoginErrors);
 
   const handleClick = () => setShow(!show);
 
@@ -81,6 +83,9 @@ const Login = () => {
                   size="md"
                 />
               </div>
+              <p className="h-4 mt-2 text-red-400 text-sm font-semibold">
+                {errors.email}
+              </p>
             </div>
             <div>
               <div className="flex items-center justify-between">
@@ -115,6 +120,9 @@ const Login = () => {
                   </InputRightElement>
                 </InputGroup>
               </div>
+              <p className="h-4 mt-2 text-red-400 text-sm font-semibold">
+                {errors.password}
+              </p>
             </div>
             <div className="">
               {loading ? (

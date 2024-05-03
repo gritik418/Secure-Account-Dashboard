@@ -9,6 +9,7 @@ import {
   getLoginInfo,
   selectEmail,
   selectIsLoggedIn,
+  selectSignupErrors,
   selectSignupLoading,
   userSignupAsync,
 } from "@/features/auth/authSlice";
@@ -29,6 +30,7 @@ const Signup = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const loading = useSelector(selectSignupLoading);
   const email = useSelector(selectEmail);
+  const errors = useSelector(selectSignupErrors);
 
   const handleClick = () => setShow(!show);
 
@@ -76,8 +78,8 @@ const Signup = () => {
               Sign In
             </Link>
           </p>
-          <div className="space-y-5 mt-10">
-            <div className="space-y-5 mt-10">
+          <div className="space-y-3 mt-10">
+            <div className="space-y-3 mt-10">
               <div className="mt-4">
                 <label
                   htmlFor="first_name"
@@ -96,6 +98,9 @@ const Signup = () => {
                     size="md"
                   />
                 </div>
+                <p className="h-2 mt-2 text-red-400 text-[12px] font-semibold">
+                  {errors.first_name}
+                </p>
               </div>
               <div className="mt-4">
                 <label
@@ -115,6 +120,9 @@ const Signup = () => {
                     size="md"
                   />
                 </div>
+                <p className="h-2 mt-2 text-red-400 text-[12px] font-semibold">
+                  {errors.last_name}
+                </p>
               </div>
               <div className="mt-4">
                 <label
@@ -134,6 +142,9 @@ const Signup = () => {
                     size="md"
                   />
                 </div>
+                <p className="h-2 mt-2 text-red-400 text-[12px] font-semibold">
+                  {errors.username}
+                </p>
               </div>
               <div className="mt-4">
                 <label
@@ -153,6 +164,9 @@ const Signup = () => {
                     size="md"
                   />
                 </div>
+                <p className="h-2 mt-2 text-red-400 text-[12px] font-semibold">
+                  {errors.email}
+                </p>
               </div>
               <div>
                 <div className="flex items-center justify-between">
@@ -186,7 +200,10 @@ const Signup = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                </div>
+                </div>{" "}
+                <p className="h-2 mt-2 text-red-400 text-[12px] font-semibold">
+                  {errors.password}
+                </p>
               </div>
               <div>
                 <div className="flex items-center justify-between">
@@ -212,8 +229,11 @@ const Signup = () => {
                         {show ? "Hide" : "Show"}
                       </Button>
                     </InputRightElement>
-                  </InputGroup>
+                  </InputGroup>{" "}
                 </div>
+                <p className="h-2 mt-2 text-red-400 text-[12px] font-semibold">
+                  {errors.password_confirmation}
+                </p>
               </div>
               <div className="">
                 {loading ? (

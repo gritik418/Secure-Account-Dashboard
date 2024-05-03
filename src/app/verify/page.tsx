@@ -2,6 +2,7 @@
 import {
   selectEmail,
   selectIsLoggedIn,
+  selectVerifyErrors,
   selectVerifyLoading,
   verifyEmailAsync,
 } from "@/features/auth/authSlice";
@@ -19,6 +20,7 @@ const Verify = () => {
   const email = useSelector(selectEmail);
   const loading = useSelector(selectVerifyLoading);
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const errors = useSelector(selectVerifyErrors);
 
   const handleClick = () => {
     dispatch(verifyEmailAsync({ email, otp }));
@@ -75,6 +77,10 @@ const Verify = () => {
           >
             {!loading ? "Verify" : "Processing..."}
           </button>
+
+          <p className="h-8 mt-6 text-red-400 text-md font-semibold">
+            {errors}
+          </p>
         </div>
       </div>
     </div>

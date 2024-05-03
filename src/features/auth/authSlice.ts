@@ -22,6 +22,9 @@ const initialState = {
   tokenInfo: {},
   authentication: "",
   verifyLoading: false,
+  loginErrors: {},
+  signupErrors: {},
+  verifyErrors: "",
 };
 
 export const userLoginAsync = createAsyncThunk(
@@ -99,6 +102,12 @@ const authSlice = createSlice({
           } else {
             state.isLoggedIn = false;
           }
+        } else {
+          if (action.payload.errors) {
+            state.loginErrors = action.payload.errors;
+          } else if (action.payload.message) {
+            state.loginErrors = { password: action.payload.message };
+          }
         }
       })
       .addCase(userLoginAsync.rejected, (state, action) => {
@@ -150,6 +159,14 @@ const authSlice = createSlice({
         state.signupLoading = false;
         if (action.payload.success) {
           state.email = action.payload.email;
+        } else {
+          if (action.payload.errors) {
+            state.signupErrors = action.payload.errors;
+          } else if (action.payload.message) {
+            state.signupErrors = {
+              password_confirmation: action.payload.message,
+            };
+          }
         }
       })
       .addCase(userSignupAsync.rejected, (state, action) => {
@@ -160,7 +177,6 @@ const authSlice = createSlice({
       })
       .addCase(verifyEmailAsync.fulfilled, (state, action) => {
         state.verifyLoading = false;
-        console.log(action.payload);
         if (action.payload.success) {
           const token = action.payload.token;
           if (token && token !== "") {
@@ -169,6 +185,16 @@ const authSlice = createSlice({
             state.authentication = "";
           } else {
             state.isLoggedIn = false;
+          }
+        } else {
+          if (action.payload.errors) {
+            if (action.payload.errors?.email) {
+              state.verifyErrors = action.payload.errors.email;
+            } else {
+              state.verifyErrors = action.payload.errors.otp;
+            }
+          } else if (action.payload.message) {
+            state.verifyErrors = action.payload.message;
           }
         }
       })
@@ -190,5 +216,8 @@ export const selectAuthentication = (state: any) => state.auth.authentication;
 export const selectEmail = (state: any) => state.auth.email;
 export const selectSignupLoading = (state: any) => state.auth.signupLoading;
 export const selectVerifyLoading = (state: any) => state.auth.verifyLoading;
+export const selectLoginErrors = (state: any) => state.auth.loginErrors;
+export const selectSignupErrors = (state: any) => state.auth.signupErrors;
+export const selectVerifyErrors = (state: any) => state.auth.verifyErrors;
 
 export default authSlice.reducer;

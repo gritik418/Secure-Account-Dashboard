@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import {
   getLoginInfo,
+  selectEmail,
   selectIsLoggedIn,
   selectLoginErrors,
   selectLoginLoading,
@@ -25,6 +26,7 @@ const Login = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const loading = useSelector(selectLoginLoading);
   const errors = useSelector(selectLoginErrors);
+  const email = useSelector(selectEmail);
 
   const handleClick = () => setShow(!show);
 
@@ -45,6 +47,14 @@ const Login = () => {
       redirect("/");
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!email || email === "") {
+      return;
+    } else {
+      redirect("/verify");
+    }
+  }, [email]);
 
   return (
     <section>

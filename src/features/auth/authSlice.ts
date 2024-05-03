@@ -94,14 +94,7 @@ const authSlice = createSlice({
       .addCase(userLoginAsync.fulfilled, (state, action) => {
         state.loginLoading = false;
         if (action.payload.success) {
-          const token = action.payload.token;
-          if (token && token !== "") {
-            localStorage.setItem("at", token);
-            state.isLoggedIn = true;
-            state.authentication = "";
-          } else {
-            state.isLoggedIn = false;
-          }
+          state.email = action.payload.email;
         } else {
           if (action.payload.errors) {
             state.loginErrors = action.payload.errors;

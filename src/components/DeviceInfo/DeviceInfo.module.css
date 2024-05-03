@@ -12,6 +12,17 @@
   border-bottom: 2px solid rgb(239, 231, 231);
   font-weight: 500;
   font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.active {
+  cursor: pointer;
+  background-color: rgb(90, 226, 90);
+  margin: 4px 18px 2px 2px;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
 }
 
 .float {

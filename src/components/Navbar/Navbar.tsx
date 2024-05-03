@@ -21,8 +21,6 @@ const Navbar = () => {
   const isLoggedIn = true;
   const user = useSelector(selectUser);
 
-  console.log(user);
-
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>

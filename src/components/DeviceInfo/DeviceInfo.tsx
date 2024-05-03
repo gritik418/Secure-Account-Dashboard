@@ -1,9 +1,13 @@
 import React from "react";
 import styles from "./DeviceInfo.module.css";
 import { MdOutlineAccessTime } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { signOutFromOtherDeviceAsync } from "@/features/auth/authSlice";
+import {
+  selectActiveDevices,
+  signOutFromOtherDeviceAsync,
+} from "@/features/auth/authSlice";
+import { Tooltip } from "@chakra-ui/react";
 
 type ClientType = {
   engine: string;
@@ -36,7 +40,7 @@ export type HistoryType = {
   device: HistoryDeviceType;
   secretKey: string;
   createdAt: string;
-  status: boolean;
+  active: boolean;
   updatedAt: string;
   userId: string;
   __v: number;
@@ -51,24 +55,35 @@ const DeviceInfo = ({
   tokenInfo: { id: string; sk: string; iat: number };
 }) => {
   const dispatch = useDispatch<Dispatch<any>>();
+  const activeDevice = useSelector(selectActiveDevices);
 
   const date = new Date(history.updatedAt);
+
+  console.log(activeDevice);
 
   const handleSignoutFromOtherDevice = () => {
     dispatch(signOutFromOtherDeviceAsync(history._id));
   };
   return (
     <div className={styles.container}>
-      <p className={styles.header}>
-        {history?.device?.os?.name}{" "}
-        {`${history?.device?.client?.type
-          ?.at(0)
-          ?.toUpperCase()}${history?.device?.client?.type?.slice(1)}`}{" "}
-        -{" "}
-        {`${history?.device?.client?.name
-          ?.at(0)
-          ?.toUpperCase()}${history?.device?.client?.name?.slice(1)}`}
-      </p>
+      <div className={styles.header}>
+        <p>
+          {history?.device?.os?.name}{" "}
+          {`${history?.device?.client?.type
+            ?.at(0)
+            ?.toUpperCase()}${history?.device?.client?.type?.slice(1)}`}{" "}
+          -{" "}
+          {`${history?.device?.client?.name
+            ?.at(0)
+            ?.toUpperCase()}${history?.device?.client?.name?.slice(1)}`}
+        </p>
+        {(activeDevice.includes(history._id) || history.active) &&
+          tokenInfo.sk !== history?.secretKey && (
+            <Tooltip hasArrow label="Active" bg="gray.300" color="black">
+              <div className={styles.active}></div>
+            </Tooltip>
+          )}
+      </div>
 
       {tokenInfo.sk === history?.secretKey && (
         <div className={styles.float}>Current device</div>

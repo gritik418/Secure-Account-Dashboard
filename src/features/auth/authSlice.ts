@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  ChangePasswordDataType,
   EmailVerificationDataType,
   UserLoginDataType,
   UserSignupDataType,
+  changePassword,
   getUser,
+  logoutUser,
   signOutFromOtherDevice,
   userLogin,
   userSignup,
@@ -25,6 +28,9 @@ const initialState = {
   loginErrors: {},
   signupErrors: {},
   verifyErrors: "",
+  changeLoading: false,
+  changeErrors: {},
+  changeMessage: false,
 };
 
 export const userLoginAsync = createAsyncThunk(
@@ -57,6 +63,21 @@ export const getUserAsync = createAsyncThunk("auth/getUser", async () => {
   return response;
 });
 
+export const logoutAsync = createAsyncThunk("auth/logout", async () => {
+  const token = localStorage.getItem("at")!;
+  const response = await logoutUser(token);
+  return response;
+});
+
+export const changePasswordAsync = createAsyncThunk(
+  "auth/changePassword",
+  async ({ userData }: { userData: ChangePasswordDataType }) => {
+    const token = localStorage.getItem("at")!;
+    const response = await changePassword(token, userData);
+    return response;
+  }
+);
+
 export const signOutFromOtherDeviceAsync = createAsyncThunk(
   "auth/signoutOtherDevice",
   async (uniqueId: string) => {
@@ -88,6 +109,13 @@ const authSlice = createSlice({
       if (action.payload) {
         state.loginHistory = action.payload;
       }
+    },
+    logout: (state) => {
+      localStorage.clear();
+      state.isLoggedIn = false;
+      state.authentication = "failed";
+      state.user = {};
+      state.tokenInfo = {};
     },
   },
   extraReducers: (builder) => {
@@ -198,11 +226,36 @@ const authSlice = createSlice({
       })
       .addCase(verifyEmailAsync.rejected, (state, action) => {
         state.verifyLoading = false;
+      })
+      .addCase(changePasswordAsync.pending, (state, action) => {
+        state.changeErrors = {};
+        state.changeLoading = true;
+      })
+      .addCase(changePasswordAsync.fulfilled, (state, action) => {
+        state.changeLoading = false;
+        state.changeErrors = {};
+        if (action.payload.success) {
+          state.changeMessage = action.payload.message;
+        } else {
+          if (action.payload.errors) {
+            if (action.payload.errors?.email) {
+              state.changeErrors = action.payload.errors;
+            } else {
+              state.changeErrors = action.payload.errors;
+            }
+          } else if (action.payload.message) {
+            state.changeErrors = { new_password: action.payload.message };
+          }
+        }
+      })
+      .addCase(changePasswordAsync.rejected, (state, action) => {
+        state.changeLoading = false;
+        state.changeErrors = {};
       });
   },
 });
 
-export const { getLoginInfo, setActive } = authSlice.actions;
+export const { getLoginInfo, setActive, logout } = authSlice.actions;
 
 export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
 export const selectLoginLoading = (state: any) => state.auth.loginLoading;
@@ -217,5 +270,8 @@ export const selectVerifyLoading = (state: any) => state.auth.verifyLoading;
 export const selectLoginErrors = (state: any) => state.auth.loginErrors;
 export const selectSignupErrors = (state: any) => state.auth.signupErrors;
 export const selectVerifyErrors = (state: any) => state.auth.verifyErrors;
+export const selectChangeLoading = (state: any) => state.auth.changeLoading;
+export const selectChangeErrors = (state: any) => state.auth.changeErrors;
+export const selectChangeMessage = (state: any) => state.auth.changeMessage;
 
 export default authSlice.reducer;

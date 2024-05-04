@@ -21,6 +21,12 @@ export type EmailVerificationDataType = {
   otp: string;
 };
 
+export type ChangePasswordDataType = {
+  old_password: string;
+  new_password: string;
+  new_password_confirmation: string;
+};
+
 export const userLogin = async (userData: UserLoginDataType) => {
   try {
     const { data } = await axios.post(`${BASE_URL}/api/login`, userData, {
@@ -89,6 +95,40 @@ export const signOutFromOtherDevice = async (
         Authorization: `Bearer ${token}`,
       },
     });
+
+    return data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const logoutUser = async (token: string) => {
+  try {
+    const { data } = await axios.get(`${BASE_URL}/api/logout/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+};
+
+export const changePassword = async (token: string, userData: any) => {
+  try {
+    const { data } = await axios.patch(
+      `${BASE_URL}/api/changepassword/`,
+      userData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return data;
   } catch (error: any) {

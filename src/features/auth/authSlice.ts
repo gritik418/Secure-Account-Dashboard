@@ -91,6 +91,13 @@ const authSlice = createSlice({
         state.activeDevices.unshift(action.payload as never);
       }
     },
+    setInActive: (state, action) => {
+      if (action.payload) {
+        state.activeDevices = state.activeDevices.filter((device) => {
+          return device !== action.payload;
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -204,7 +211,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { getLoginInfo, setActive } = authSlice.actions;
+export const { getLoginInfo, setActive, setInActive } = authSlice.actions;
 
 export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
 export const selectLoginLoading = (state: any) => state.auth.loginLoading;

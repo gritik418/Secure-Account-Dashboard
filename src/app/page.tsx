@@ -10,8 +10,8 @@ import {
   selectAuthentication,
   selectLoginHistory,
   selectTokenInfo,
-  selectUser,
   setActive,
+  setInActive,
 } from "@/features/auth/authSlice";
 import { redirect } from "next/navigation";
 import { socket } from "./socket";
@@ -44,8 +44,6 @@ export default function Home() {
   useEffect(() => {
     if (!currentDevice) return;
 
-    console.log(currentDevice);
-
     socket.emit("active", {
       currentDevice,
       login_history: loginHistory,
@@ -55,9 +53,13 @@ export default function Home() {
       dispatch(setActive(activeDevice));
     });
 
+    socket.on("device-inactive", ({ inactiveDevice }) => {
+      dispatch(setInActive(inactiveDevice));
+    });
+
     return () => {
-      socket.emit("offline", {currentDevice})
-    }
+      socket.emit("offline", { currentDevice, login_history: loginHistory });
+    };
   }, [socket, loginHistory]);
 
   return (

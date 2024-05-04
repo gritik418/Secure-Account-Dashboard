@@ -1,4 +1,4 @@
-import React from "react";
+import React, { act } from "react";
 import styles from "./DeviceInfo.module.css";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,8 +59,6 @@ const DeviceInfo = ({
 
   const date = new Date(history.updatedAt);
 
-  console.log(activeDevice);
-
   const handleSignoutFromOtherDevice = () => {
     dispatch(signOutFromOtherDeviceAsync(history._id));
   };
@@ -77,7 +75,7 @@ const DeviceInfo = ({
             ?.at(0)
             ?.toUpperCase()}${history?.device?.client?.name?.slice(1)}`}
         </p>
-        {(activeDevice.includes(history._id) || history.active) &&
+        {(history.active || activeDevice.includes(history._id)) &&
           tokenInfo.sk !== history?.secretKey && (
             <Tooltip hasArrow label="Active" bg="gray.300" color="black">
               <div className={styles.active}></div>

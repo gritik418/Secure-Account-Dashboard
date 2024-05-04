@@ -25,6 +25,7 @@ const initialState = {
   loginErrors: {},
   signupErrors: {},
   verifyErrors: "",
+  activeDevices: [],
 };
 
 export const userLoginAsync = createAsyncThunk(
@@ -82,6 +83,19 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.tokenInfo = user;
         state.authentication = "";
+      }
+    },
+    setActive: (state, action) => {
+      if (action.payload) {
+        if (state.activeDevices.includes(action.payload as never)) return;
+        state.activeDevices.unshift(action.payload as never);
+      }
+    },
+    setInActive: (state, action) => {
+      if (action.payload) {
+        state.activeDevices = state.activeDevices.filter((device) => {
+          return device !== action.payload;
+        });
       }
     },
   },
@@ -197,7 +211,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { getLoginInfo } = authSlice.actions;
+export const { getLoginInfo, setActive, setInActive } = authSlice.actions;
 
 export const selectIsLoggedIn = (state: any) => state.auth.isLoggedIn;
 export const selectLoginLoading = (state: any) => state.auth.loginLoading;
@@ -212,5 +226,6 @@ export const selectVerifyLoading = (state: any) => state.auth.verifyLoading;
 export const selectLoginErrors = (state: any) => state.auth.loginErrors;
 export const selectSignupErrors = (state: any) => state.auth.signupErrors;
 export const selectVerifyErrors = (state: any) => state.auth.verifyErrors;
+export const selectActiveDevices = (state: any) => state.auth.activeDevices;
 
 export default authSlice.reducer;

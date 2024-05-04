@@ -11,7 +11,6 @@ import {
   selectLoginHistory,
   selectTokenInfo,
   setActive,
-  setInActive,
 } from "@/features/auth/authSlice";
 import { redirect } from "next/navigation";
 import { socket } from "./socket";
@@ -49,17 +48,9 @@ export default function Home() {
       login_history: loginHistory,
     });
 
-    socket.on("device-active", ({ activeDevice }) => {
-      dispatch(setActive(activeDevice));
+    socket.on("device-active", ({ login_history }) => {
+      dispatch(setActive(login_history));
     });
-
-    socket.on("device-inactive", ({ inactiveDevice }) => {
-      dispatch(setInActive(inactiveDevice));
-    });
-
-    return () => {
-      socket.emit("offline", { currentDevice, login_history: loginHistory });
-    };
   }, [socket, loginHistory]);
 
   return (

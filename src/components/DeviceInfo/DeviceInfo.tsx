@@ -1,13 +1,9 @@
-import React, { act } from "react";
+import React from "react";
 import styles from "./DeviceInfo.module.css";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import {
-  selectActiveDevices,
-  signOutFromOtherDeviceAsync,
-} from "@/features/auth/authSlice";
-import { Tooltip } from "@chakra-ui/react";
+import { signOutFromOtherDeviceAsync } from "@/features/auth/authSlice";
 
 type ClientType = {
   engine: string;
@@ -55,8 +51,6 @@ const DeviceInfo = ({
   tokenInfo: { id: string; sk: string; iat: number };
 }) => {
   const dispatch = useDispatch<Dispatch<any>>();
-  const activeDevice = useSelector(selectActiveDevices);
-
   const date = new Date(history.updatedAt);
 
   const handleSignoutFromOtherDevice = () => {
@@ -75,12 +69,6 @@ const DeviceInfo = ({
             ?.at(0)
             ?.toUpperCase()}${history?.device?.client?.name?.slice(1)}`}
         </p>
-        {(history.active || activeDevice.includes(history._id)) &&
-          tokenInfo.sk !== history?.secretKey && (
-            <Tooltip hasArrow label="Active" bg="gray.300" color="black">
-              <div className={styles.active}></div>
-            </Tooltip>
-          )}
       </div>
 
       {tokenInfo.sk === history?.secretKey && (
